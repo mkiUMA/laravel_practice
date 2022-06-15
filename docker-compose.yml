@@ -1,0 +1,33 @@
+version: '3'
+services:
+  app:
+    build: .
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/var/www/html
+  db: 
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: laravel_db
+      TZ: Asia/Tokyo
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+  phpmyadmin:
+    image: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      TZ: Asia/Tokyo
+    ports:
+      - "8000:80"
+volumes:
+  mysql:
